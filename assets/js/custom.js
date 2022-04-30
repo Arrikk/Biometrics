@@ -339,7 +339,8 @@ function getHand() {
 
 // Enroll Fingerprint
 enrollBtn.on("click", function () {
-  enrollFingerprint();
+  let btn = $(this)
+  enrollFingerprint(btn);
 });
 
 // Verify fingerprint
@@ -348,7 +349,7 @@ verifyBtn.on("click", function () {
 });
 
 // Enroll Fingers
-function enrollFingerprint() {
+function enrollFingerprint(btn) {
   const { left, right } = isCaptured;
 
   let leftHand = JSON.parse(`{${left.slice(0, -1)}}`);
@@ -369,7 +370,8 @@ function enrollFingerprint() {
     }
   }
 
-  bruiz.requestEngine(bruiz.apiUri+"users/people", formData);
+  // bruiz.requestEngine(bruiz.apiUri+"users/people", formData);
+  bruiz.requestEngine(bruiz.apiUri, item, btn);
 }
 
 function verifyFingerPrint() {

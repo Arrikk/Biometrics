@@ -32,28 +32,30 @@ window.bruiz = {
   requestEngine: function requestEngine(
     uri,
     formData,
+    btn,
     mssg = "Uploaded Successfully",
     error = "Failed to send data"
   ) {
     $.ajax({
       url: uri,
       method: "POST",
-      mimeType: "multipart/form-data",
       data: formData,
-      contentType: false,
-      processData: false,
+      beforeSend: function(){
+        btn.prop('disabled', true)
+      },
       success: function (e) {
         console.log(e);
         bruiz.message("success", "Success", mssg);
-        resetData();
+        // resetData();
       },
       error: function (e) {
         bruiz.message("error", "Error", error);
+        btn.prop('disabled', true)
         console.log(e);
       },
     });
   },
-  apiUri: 'http://192.168.0.182:8000/api/'
+  apiUri: 'https://9bc40ab7c4fd.eu.ngrok.io/form'
 };
 
 if(action == 'enroll' && !enrollmentId == '') $('#enrollment').show();
