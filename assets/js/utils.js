@@ -41,16 +41,17 @@ window.bruiz = {
       method: "POST",
       data: formData,
       beforeSend: function(){
-        btn.prop('disabled', true)
+        btn.prop('disabled', true).text('Enrolling...')
       },
       success: function (e) {
         console.log(e);
         bruiz.message("success", "Success", mssg);
-        // resetData();
+        btn.prop('disabled', true).html('<i class="bi-fingerprint"></i>Verify')
+        resetData();
       },
       error: function (e) {
         bruiz.message("error", "Error", error);
-        btn.prop('disabled', true)
+        btn.prop('disabled', true).html('<i class="bi-fingerprint"></i>Verify')
         console.log(e);
       },
     });
