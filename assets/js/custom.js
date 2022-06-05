@@ -1,5 +1,5 @@
 var test = null;
-let isVerification = false;
+let isVerification = bruiz.action == 'verify' ? true : false;
 let verificationPng = null;
 let istoVerify = false;
 
@@ -224,8 +224,8 @@ function setStopCapture() {
 }
 
 captureBtn.on("click", function () {
-  let ver = $(this).data("ver");
-  if (ver) isVerification = true;
+  // let ver = $(this).data("ver");
+  // if (ver) isVerification = true;
   startCapture();
 });
 
@@ -345,7 +345,8 @@ enrollBtn.on("click", function () {
 
 // Verify fingerprint
 verifyBtn.on("click", function () {
-  verifyFingerPrint();
+  let btn = $(this)
+  verifyFingerPrint(btn);
 });
 
 // Enroll Fingers
@@ -356,32 +357,33 @@ function enrollFingerprint(btn) {
   let rightHand = JSON.parse(`{${right.slice(0, -1)}}`);
 
   const item = {
-    enrollment_id: bruiz.enrollmentId,
+    user_id: bruiz.enrollmentId,
     ...leftHand,
     ...rightHand,
   };
 
   const formData = new FormData();
   for (const data in item) {
-    if (data == "enrollment_id") {
+    if (data == "user_id") {
       formData.append(data, item[data]);
     } else {
       formData.append("file", item[data]);
     }
   }
 
-  // bruiz.requestEngine(bruiz.apiUri+"users/people", formData);
-  bruiz.requestEngine(bruiz.apiUri, item, btn);
+  bruiz.requestEngine(bruiz.apiUri+"users/people", formData, btn);
+  // bruiz.requestEngine(bruiz.apiUri, item, btn);
 }
 
-function verifyFingerPrint() {
+function verifyFingerPrint(btn) {
   const formData = new FormData();
-  formData.append("enrollment_id", bruiz.enrollmentId);
+  formData.append("user_id", bruiz.enrollmentId);
   formData.append("file", verificationPng.data);
 
   bruiz.requestEngine(
     bruiz.apiUri+"users/verify",
     formData,
+    btn,
     "Successfuly Verified",
     "Authorization failed"
   );

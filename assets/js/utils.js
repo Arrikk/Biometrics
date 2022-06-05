@@ -39,12 +39,15 @@ window.bruiz = {
     $.ajax({
       url: uri,
       method: "POST",
+      mimeType: 'multipart/form-data',
       data: formData,
+      processData: false,
+      contentType: false,
       beforeSend: function(){
-        btn.prop('disabled', true).text('Enrolling...')
+        btn.prop('disabled', true).text('Processing...')
       },
       success: function (e) {
-        console.log(e);
+        // console.log(e);
         bruiz.message("success", "Success", mssg);
         btn.prop('disabled', true).html('<i class="bi-fingerprint"></i>Verify')
         resetData();
@@ -52,12 +55,15 @@ window.bruiz = {
       error: function (e) {
         bruiz.message("error", "Error", error);
         btn.prop('disabled', true).html('<i class="bi-fingerprint"></i>Verify')
-        console.log(e);
+        // console.log(e);
+        setData();
       },
     });
-  },
-  apiUri: 'https://9bc40ab7c4fd.eu.ngrok.io/form'
+  }, 
+  apiUri: 'http://146.190.231.203:8000/api/',
+  action
 };
 
 if(action == 'enroll' && !enrollmentId == '') $('#enrollment').show();
 if(action == 'verify' && !enrollmentId == '') $('#verification').show();
+// apiUri: 'https://9bc40ab7c4fd.eu.ngrok.io/form'
